@@ -2,30 +2,44 @@
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import PreviewCard from './PreviewCard';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DesignCard = () => {
     const [mostrarQR, setMostrarQR] = useState(false);
 
     const [colores, setColores] = useState([
-        "bg-blue-500",
-        "bg-pink-500",
-        "bg-yellow-400",
-        "bg-green-500",
-        "bg-blue-800",
+        "#000000",
+        "#2471a3",
+        "#d35400",
+        "#7b241c",
         "#ffffff",
     ]);
     const [colorInput, setColorInput] = useState("");
     const [colorSeleccionado, setColorSeleccionado] = useState("");
 
+    useEffect(() => {
+        const coloresGuardados = localStorage.getItem("coloresPersonalizados");
+        if (coloresGuardados) {
+            setColores(JSON.parse(coloresGuardados));
+        }
+    }, []);
+
     const handleAgregarColor = () => {
-        if (colorInput.trim() && !colores.includes(colorInput.trim())) {
-            setColores([...colores, colorInput.trim()]);
+        const nuevoColor = colorInput.trim();
+        if (nuevoColor && !colores.includes(nuevoColor)) {
+            const nuevosColores = [...colores, nuevoColor];
+            setColores(nuevosColores);
+            localStorage.setItem("coloresPersonalizados", JSON.stringify(nuevosColores));
             setColorInput("");
         }
     };
+
     const handleMostrarQR = () => {
         setMostrarQR((prev) => !prev);
+    };
+
+    const handleSeleccionColor = (color) => {
+        setColorSeleccionado(color);
     };
 
     const esHex = (color) => color.startsWith("#");
@@ -60,7 +74,7 @@ const DesignCard = () => {
                                         <input
                                             id="hashtag"
                                             className="border rounded px-2 py-1"
-                                            placeholder="#ff5733 o bg-red-500"
+                                            placeholder="#---"
                                             value={colorInput}
                                             onChange={(e) => setColorInput(e.target.value)}
                                         />
@@ -96,18 +110,18 @@ const DesignCard = () => {
                                     </select>
                                 </div>
 
-                                {/* Subir imagen */}
+                                {/* seleccionar plantilla
                                 <div className=" p-4">
                                     <h3 className="font-semibold mb-2 bg-gray-300">Plantilla</h3>
                                     <label htmlFor="color">Seleccionar plantilla</label>
                                     <select id="color" className="border rounded px-2 py-1 w-full">
                                         <option>blue </option>
                                     </select>
-                                </div>
+                                </div> */}
 
                                 {/* Botones */}
                                 <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-4 mt-6">
-                                    <button type="button" className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">Generar Tarjeta</button>
+                                    {/* <button type="button" className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">Generar Tarjeta</button> */}
                                     <button type="submit" className="bg-[#e79363] text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">Guardar</button>
                                     <button type="button" className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition">Cancelar</button>
                                 </div>
@@ -120,7 +134,11 @@ const DesignCard = () => {
 
             {/* Panel Lista de Contactos */}
             <div className="w-full lg:w-1/3">
-                <PreviewCard mostrarQR={mostrarQR} onClick={handleMostrarQR} />
+                <PreviewCard
+                    mostrarQR={mostrarQR}
+                    onClick={handleMostrarQR}
+                    colorSeleccionado={colorSeleccionado}
+                />
             </div>
         </div>
     );
