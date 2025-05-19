@@ -7,7 +7,7 @@ const Sidebar = () => {
             <div className="hidden md:flex flex-col justify-between h-full">
                 <ul className="flex flex-col gap-6 mt-6 w-6 text-xl">
                     <li className="relative group">
-                        <Link href="/" className="hover:text-[#e79363]">
+                        <Link href="/dashboard/inicio" className="hover:text-[#e79363]">
                             <HomeIcon className="text-2xl text-center" />
                         </Link>
                         <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 
@@ -16,7 +16,7 @@ const Sidebar = () => {
                         </span>
                     </li>
                     <li className="relative group">
-                        <Link href="/contacts" className="hover:text-[#e79363]">
+                        <Link href="/dashboard/contacts" className="hover:text-[#e79363]">
                             <UsersIcon className="text-2xl text-center" />
                         </Link>
                         <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 
@@ -25,7 +25,7 @@ const Sidebar = () => {
                         </span>
                     </li>
                     <li className="relative group">
-                        <Link href="/cards" className="hover:text-[#e79363]">
+                        <Link href="/dashboard/cards" className="hover:text-[#e79363]">
                             <ClipboardDocumentListIcon className="text-2xl text-center" />
                         </Link>
                         <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 

@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Montserrat } from "next/font/google";
-import Sidebar from "@components/Sidebar/Sidebar";
-import Header from "@components/Header/Header";
-
+import OidcProviderWrapper from "@services/serviceCognito";
 const fontMont = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,17 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${fontMont.className}`}>
-        <div className="flex h-screen bg-gray-100">
-          <Sidebar />
-          <div className="flex flex-col flex-1 md:ml-16">
-            <Header />
-            <main className="flex-1 overflow-y-auto">
-              {children}
-            </main>
-          </div>
-        </div>
-      </body>
+      <OidcProviderWrapper>
+        <body className={`${fontMont.className}`}>
+          {children}
+        </body>
+      </OidcProviderWrapper>
     </html>
   );
 }

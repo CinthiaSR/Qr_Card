@@ -1,5 +1,6 @@
 import { QrCodeIcon } from '@heroicons/react/24/outline'
 import ListContact from './ListContact'
+import PreviewContact from './PreviewContact'
 const AddContacts = () => {
     return (
         <div className="flex flex-col lg:flex-row flex-1 p-4 gap-4 overflow-y-auto h-full">
@@ -14,6 +15,10 @@ const AddContacts = () => {
                     <div className="flex-1 p-2">
                         <div className="max-w-full mx-auto p-2">
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Identificador</label>
+                                    <input type="text" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Casa 1, mi negocio, oficina " />
+                                </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-1">Nombre</label>
                                     <input type="text" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nombre completo" />
@@ -53,9 +58,10 @@ const AddContacts = () => {
                         </div>
                     </div>
                     <div className="p-4 mt-4 md:mt-0 md:w-1/3">
-                        <div className='flex justify-center border rounded-lg border-b-black max-w-full h-60 p-10'>
+                        <PreviewContact />
+                        {/* <div className='flex justify-center border rounded-lg border-b-black max-w-full h-60 p-10'>
                             <QrCodeIcon className="h-40 w-40 text-[#e79363]" />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
