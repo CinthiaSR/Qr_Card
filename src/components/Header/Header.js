@@ -1,6 +1,8 @@
 import { UserIcon } from '@heroicons/react/24/outline'
+import { useAuth } from "react-oidc-context";
 
 const Header = () => {
+    const auth = useAuth()
     return (
         <div className="w-full flex justify-end items-center px-6 py-4 bg-white shadow-sm">
             <div className="flex flex-row items-center gap-2 px-2 py-1 rounded">
@@ -8,7 +10,7 @@ const Header = () => {
                 <span className="text-lg">
                     <UserIcon className="h-8 w-8 text-[#e79363]" />
                 </span>
-                <span className="text-sm font-medium text-black">Edward</span>
+                <span className="text-sm font-medium text-black">{auth.user?.profile.email}</span>
             </div>
         </div>
 
