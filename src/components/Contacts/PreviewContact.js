@@ -1,6 +1,6 @@
 import { UserIcon, PhoneIcon, EnvelopeOpenIcon, BuildingOfficeIcon, BriefcaseIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 
-const PreviewContact = () => {
+const PreviewContact = ({ formData }) => {
     return (
         <div className="bg-white p-2 h-full">
             <h3 className="text-center font-semibold mb-4">Vista Previa</h3>

@@ -1,7 +1,7 @@
 "use client"
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react';
-import Pagination from '@components/utils/Pagination';
+import Pagination from 'utils/Pagination';
 
 
 const DesignCardList = () => {
@@ -21,7 +21,7 @@ const DesignCardList = () => {
                 </div>
             ))}
 
-            <Pagination currentPage={page} totalPages={total} onPageChange={setPage} />
+            {/* <Pagination currentPage={page} totalPages={total} onPageChange={setPage} /> */}
         </div>
     );
 }

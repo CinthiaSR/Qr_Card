@@ -1,12 +1,20 @@
 "use client"
+import axiosInstance from '@lib/axiosInstance';
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import PreviewCard from './PreviewCard';
 import DesignCardList from './DesignCardList';
-
+import { myId } from 'utils/utils';
 import { useState, useEffect } from "react";
+
+const key = Object.keys(sessionStorage).find(k => k.startsWith('oidc.user:'));
+const data = JSON.parse(sessionStorage.getItem(key));
+const userId = data?.profile.sub
 
 const DesignCard = () => {
     const [mostrarQR, setMostrarQR] = useState(false);
+    const [selectContact, setSelectContact] = useState('select')
+    const [getList, setGetList] = useState([])
+    const [formData, setFormData] = useState({ name: "" });
 
     const [colores, setColores] = useState([
         "#000000",
@@ -23,6 +31,7 @@ const DesignCard = () => {
         if (coloresGuardados) {
             setColores(JSON.parse(coloresGuardados));
         }
+        getListContacts()
     }, []);
 
     const handleAgregarColor = () => {
@@ -45,6 +54,53 @@ const DesignCard = () => {
 
     const esHex = (color) => color.startsWith("#");
 
+    const getListContacts = async () => {
+        try {
+            const response = await axiosInstance.get(`/${userId}/contacts`);
+            const responseData = response.data._embedded.contacts
+            console.log("RESPONSE DATA...", responseData)
+            setGetList(responseData);
+        } catch (error) {
+            console.log('Error al obtener getListContacts:', error.message);
+        }
+    }
+
+    const handleSelectContact = (e) => {
+        const value = e.target.value
+        setSelectContact(value)
+        console.log("CONTACTO SELECCIONADO: ", value)
+    }
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData();
+        fd.append("name", formData.name)
+        fd.append("color", colorSeleccionado)
+        fd.append("contactId", selectContact)
+
+        try {
+            const bodyData = JSON.stringify({ ...fd })
+            console.log(bodyData)
+            const response = await axiosInstance.post(`/${userId}/vcards`, bodyData);
+            console.log("✅ Contacto creado:", response.data);
+
+            await fetchContact();
+            resetForm()
+        } catch (err) {
+            console.log("❌ Error al agregar contacto", err);
+        }
+
+    }
+
+
     return (
         <div className="flex flex-col lg:flex-row flex-1 p-4 gap-4 overflow-y-auto h-full">
             {/*  Agregar Contacto y QR */}
@@ -56,7 +112,7 @@ const DesignCard = () => {
                 <div className="flex flex-col lg:flex-row gap-4">
                     {/* Formulario */}
                     <div className="w-full lg:w-2/3">
-                        <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded">
+                        <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded" onSubmit={handleSubmit}>
                             <div className="sm:col-span-2">
                                 <h3 className="font-semibold mb-2 bg-gray-300 p-2 rounded">Diseño y personalización</h3>
                                 <div className="flex items-center gap-4 mb-4 flex-wrap">
@@ -90,14 +146,14 @@ const DesignCard = () => {
                                 <div className="flex items-center gap-2 pb-4">
                                     <label htmlFor="contacto">Seleccionado</label>
                                     <select
-                                        id="contacto"
+                                        id="color"
                                         className="border rounded px-2 py-1 w-full"
                                         value={colorSeleccionado}
                                         onChange={(e) => setColorSeleccionado(e.target.value)}
                                     >
                                         <option value="">Color</option>
                                         {colores.map((color, index) => (
-                                            <option key={index} value={color}>
+                                            <option key={myId()} value={color}>
                                                 {color}
                                             </option>
                                         ))}
@@ -110,19 +166,27 @@ const DesignCard = () => {
                                 <div className="flex items-center gap-2 mb-4">
                                     <label htmlFor="contacto">Nombre: </label>
                                     <input
-                                        id="hashtag"
+                                        id="name"
                                         className="border rounded px-2 py-1 w-full"
                                         placeholder="Nombre para identificar la tarjeta"
-                                        value={colorInput}
-                                        onChange={(e) => setColorInput(e.target.value)}
+                                        value={formData.name}
+                                        onChange={handleChange}
                                     />
                                 </div>
 
                                 <h3 className="font-semibold mb-2 bg-gray-300 p-2 rounded">Información Personal</h3>
                                 <div className="flex items-center gap-2 mb-4">
                                     <label htmlFor="contacto">Contacto: </label>
-                                    <select id="contacto" className="border rounded px-2 py-1 w-full">
-                                        <option>Seleccionar</option>
+                                    <select id="contacto"
+                                        className="border rounded px-2 py-1 w-full"
+                                        value={selectContact}
+                                        onChange={handleSelectContact}>
+                                        <option value="select">Selecciona</option>
+                                        {getList.map((item, i) => {
+                                            const id = item.id
+                                            const nameContact = item.name
+                                            return <option key={myId()} value={`${id}`}>{nameContact}</option>;
+                                        })}
                                     </select>
                                 </div>
 
@@ -147,6 +211,7 @@ const DesignCard = () => {
                             mostrarQR={mostrarQR}
                             onClick={handleMostrarQR}
                             colorSeleccionado={colorSeleccionado}
+                            onSeleted={selectContact}
                         />
                     </div>
                 </div>
