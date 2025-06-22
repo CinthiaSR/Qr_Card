@@ -8,6 +8,7 @@ const cognitoAuthConfig = {
     redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI,
     response_type: process.env.NEXT_PUBLIC_RESPONSE_TYPE,
     scope: process.env.NEXT_PUBLIC_SCOPE,
+    post_logout_redirect_uri: process.env.NEXT_PUBLIC_LOGOUT_URI,
 };
 
 export default function OidcProviderWrapper({ children }) {

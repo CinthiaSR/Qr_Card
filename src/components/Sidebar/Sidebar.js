@@ -5,15 +5,6 @@ import { useAuth } from 'react-oidc-context';
 const Sidebar = ({ signOutRedirect }) => {
     const auth = useAuth()
 
-    // const signOutRedirect = async () => {
-    //     await auth.removeUser();
-    //     const clientId = process.env.NEXT_PUBLIC_CLIENT_ID
-    //     const logoutUri = process.env.NEXT_PUBLIC_LOGOUT_URI
-    //     const cognitoDomain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN
-    //     // window.location.href = "http://localhost:3000/"
-    //     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
-    // };
-
     if (auth.isAuthenticated) {
         console.log("Autenticado", auth.isAuthenticated)
         return (
@@ -60,9 +51,10 @@ const Sidebar = ({ signOutRedirect }) => {
                             </span>
                         </li>
                         <li className="relative group">
-                            <button className="hover:text-[#e79363]" onClick={signOutRedirect}>
-                                .<ArrowLeftEndOnRectangleIcon className="text-2xl text-center" />
+                            <button className="hover:text-[#e79363] text-xs" onClick={signOutRedirect}>
+                                Salir <ArrowLeftEndOnRectangleIcon className="text-2xl text-center" />
                             </button>
+                            {/* <button onClick={signOutRedirect}>Sign out</button> */}
                             <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 
                      bg-gray-800 text-white text-xs px-2 py-1 rounded hidden group-hover:block whitespace-nowrap z-10">
                                 Salir
@@ -72,21 +64,21 @@ const Sidebar = ({ signOutRedirect }) => {
                 </div>
                 <div className="fixed bottom-0 left-0 right-0 h-12  bg-teal-600  py-3 border-t border-white/20 shadow-md md:hidden">
                     <div className='text-white flex justify-around items-center'>
-                        <Link href="/">
+                        <Link href="/dashboard/inicio">
                             <HomeIcon className="w-8 h-8 hover:text-[#e79363] cursor-pointer" />
                         </Link>
-                        <Link href="/contacts">
+                        <Link href="/dashboard/contacts">
                             <UsersIcon className="w-8 h-8 hover:text-[#e79363] cursor-pointer" />
                         </Link>
-                        <Link href="/cards">
+                        <Link href="/dashboard/cards">
                             <ClipboardDocumentListIcon className="w-8 h-8 hover:text-[#e79363] cursor-pointer" />
                         </Link>
                         <Link href="/">
                             <UserIcon className="w-8 h-8 hover:text-[#e79363] cursor-pointer" />
                         </Link>
-                        <Link href="/">
+                        <button onClick={signOutRedirect}>
                             <ArrowLeftEndOnRectangleIcon className="w-8 h-8 hover:text-[#e79363] cursor-pointer" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -65,7 +65,8 @@ const PreviewCard = ({ mostrarQR, onClick, colorSeleccionado, onSeleted }) => {
                 </p>
                 <p className="flex items-center gap-2">
                     <PhoneIcon className="w-4 h-4 text-gray-600" />
-                    <strong>Tel:</strong> {getInfoContact ? `${getInfoContact.phones[0]}` : "6631275952"}
+                    <strong>Tel:</strong> 6631275952
+                    {/* <strong>Tel:</strong> {getInfoContact ? `${getInfoContact.phones[0]}` : "6631275952"} */}
                 </p>
                 <p className="flex items-center gap-2">
                     <EnvelopeOpenIcon className="w-4 h-4 text-gray-600" />
