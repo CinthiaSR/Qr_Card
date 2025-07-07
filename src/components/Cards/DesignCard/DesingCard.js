@@ -81,13 +81,18 @@ const DesignCard = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const fd = new FormData();
-        fd.append("name", formData.name)
-        fd.append("color", colorSeleccionado)
-        fd.append("contactId", selectContact)
+        // const fd = new FormData();
+        // fd.append("name", formData.name)
+        // fd.append("color", colorSeleccionado)
+        // fd.append("contactId", selectContact)
+        const data = {
+            name: formData.name,
+            color: colorSeleccionado,
+            contactId: selectContact
+        };
 
         try {
-            const bodyData = JSON.stringify({ ...fd })
+            const bodyData = JSON.stringify(data)
             console.log(bodyData)
             const response = await axiosInstance.post(`/${userId}/vcards`, bodyData);
             console.log("✅ Contacto creado:", response.data);

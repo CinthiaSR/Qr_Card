@@ -42,3 +42,35 @@ export const showConfirmDelete = async (onConfirmFn) => {
         });
     }
 };
+
+export const showUpdateContact = async (onConfirmFn) => {
+    const result = await Swal.fire({
+        title: "¿Estás segura/o?",
+        text: "¡Esta acción no se puede deshacer!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, actualizar",
+        cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+        await onConfirmFn(); // Ejecuta la acción (el DELETE)
+        await Swal.fire({
+            title: "¡Actualizado!",
+            text: "El contacto ha sido actualizado.",
+            icon: "success",
+        });
+    } catch (err) {
+        console.error("❌ Error al actualizar el contacto", err);
+        Swal.fire({
+            title: 'Error',
+            text: err.response?.data?.message || 'Hubo un problema al actualizar el contacto.',
+            icon: 'error',
+            confirmButtonColor: '#d33',
+        });
+    }
+};

@@ -4,7 +4,7 @@ import axiosInstance from '@lib/axiosInstance';
 import ListContact from './ListContact'
 import PreviewContact from './PreviewContact'
 import { useRef, useState, useEffect } from 'react';
-import { showConfirmDelete } from 'utils/utils';
+import { showConfirmDelete, showUpdateContact } from 'utils/utils';
 
 const key = Object.keys(sessionStorage).find(k => k.startsWith('oidc.user:'));
 const data = JSON.parse(sessionStorage.getItem(key));
@@ -64,8 +64,10 @@ const AddContacts = () => {
             console.log(bodyData)
 
             if (isEditing && editId) {
-                const response = await axiosInstance.put(`/${userId}/contacts/${editId}`, bodyData)
-                console.log("📝 Contacto Actualizado:", response.data);
+                showUpdateContact(async () => {
+                    const response = await axiosInstance.put(`/${userId}/contacts/${editId}`, bodyData)
+                    console.log("📝 Contacto Actualizado:", response.data);
+                })
             } else {
                 const response = await axiosInstance.post(`/${userId}/contacts`, bodyData);
                 console.log("✅ Contacto creado:", response.data);
